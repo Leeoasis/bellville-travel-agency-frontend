@@ -10,32 +10,30 @@ const Login = ({ onLogin }) => {
     const { name, value } = e.target;
     setCredentials((prev) => ({ ...prev, [name]: value }));
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await fetch('http://localhost:3001/login', {
+    const response = await fetch('http://localhost:3001/auth/sign_in', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        user: {
-          email: credentials.email,
-          password: credentials.password,
-        },
+        email: credentials.email,
+        password: credentials.password,
       }),
     });
-
+  
     if (response.ok) {
       const data = await response.json();
-      onLogin(data);
+      onLogin(data); // Callback function for successful login
       setErrorMessage('');
       navigate('/home'); // Redirect to the home page
     } else {
       const errorData = await response.json();
-      setErrorMessage(errorData.status.message);
+      setErrorMessage(errorData.error || 'Login failed.'); // Update error handling
     }
   };
+  
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-blue-500 to-purple-600">

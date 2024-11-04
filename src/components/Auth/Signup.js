@@ -15,27 +15,23 @@ const Signup = ({ onSignup }) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     const form = new FormData();
-    form.append('user[email]', formData.email);
-    form.append('user[password]', formData.password);
-    form.append('user[name]', formData.name);
-    if (formData.avatar) {
-      form.append('user[avatar]', formData.avatar);
-    }
-
-    const response = await fetch('http://localhost:3001/signup', {
+    form.append('email', formData.email);
+    form.append('password', formData.password);
+    form.append('name', formData.name);
+  
+    const response = await fetch('http://localhost:3001/auth', {
       method: 'POST',
       body: form,
     });
-
+  
     if (response.ok) {
       const data = await response.json();
       onSignup(data);
-      setErrorMessage(''); // Clear any previous error messages
-      navigate('/login'); // Redirect to the login page after successful signup
+      setErrorMessage('');
+      navigate('/login');
     } else {
       const errorData = await response.json();
       setErrorMessage(errorData.status.message || 'Signup failed.');
