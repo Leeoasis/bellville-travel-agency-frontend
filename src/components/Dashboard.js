@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { fetchAccounts } from '../redux/accountsSlice';
 import { fetchTransactions } from '../redux/transactionsSlice';
 import BalanceSummary from '../features/BalanceSummary';
