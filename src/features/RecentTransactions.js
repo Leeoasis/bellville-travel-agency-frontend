@@ -1,13 +1,14 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchTransactions } from '../redux/transactionsSlice';
+import { fetchTransactions, fetchTransfers } from '../redux/transactionsSlice';
 
 const RecentTransactions = () => {
   const dispatch = useDispatch();
-  const { transactions, loading, error } = useSelector((state) => state.transactions);
+  const { transactions, transfers, loading, error } = useSelector((state) => state.transactions);
 
   useEffect(() => {
     dispatch(fetchTransactions());
+    dispatch(fetchTransfers());
   }, [dispatch]);
 
   if (loading) {
@@ -18,13 +19,13 @@ const RecentTransactions = () => {
     return <div>Error: {error}</div>;
   }
 
-  if (!Array.isArray(transactions) || transactions.length === 0) {
-    return <div>No transactions found.</div>;
+  if ((!Array.isArray(transactions) || transactions.length === 0) && (!Array.isArray(transfers) || transfers.length === 0)) {
+    return <div>No transactions or transfers found.</div>;
   }
 
   return (
     <div className="bg-gray-100 p-4 rounded shadow">
-      <h2 className="text-xl font-bold">Recent Transactions</h2>
+      <h2 className="text-xl font-bold">Recent Transactions and Transfers</h2>
       <table className="w-full mt-2">
         <thead>
           <tr>
@@ -41,6 +42,14 @@ const RecentTransactions = () => {
               <td>{transaction.account_name}</td>
               <td>{transaction.transaction_type}</td>
               <td className="text-right">${transaction.amount}</td>
+            </tr>
+          ))}
+          {transfers.slice(0, 10).map(transfer => (
+            <tr key={transfer.id}>
+              <td>{new Date(transfer.date).toLocaleDateString()}</td>
+              <td>From: {transfer.from_account_name} To: {transfer.to_account_name}</td>
+              <td>Transfer</td>
+              <td className="text-right">${transfer.amount}</td>
             </tr>
           ))}
         </tbody>

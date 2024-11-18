@@ -5,7 +5,7 @@ const BASE_URL = 'http://localhost:3001/api';
 
 const initialState = {
   transactions: [],
-  transaction: {},
+  transfers: [],
   status: 'idle',
   loading: false,
   error: null,
@@ -18,6 +18,17 @@ export const fetchTransactions = createAsyncThunk('transactions/fetchTransaction
     return response.data;
   } catch (error) {
     console.error('Error fetching transactions:', error.response);
+    return thunkApi.rejectWithValue(error.response.data);
+  }
+});
+
+// Fetch all transfers
+export const fetchTransfers = createAsyncThunk('transfers/fetchTransfers', async (_, thunkApi) => {
+  try {
+    const response = await axios.get(`${BASE_URL}/transfers`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching transfers:', error.response);
     return thunkApi.rejectWithValue(error.response.data);
   }
 });
@@ -84,6 +95,19 @@ const transactionsSlice = createSlice({
         state.status = 'failed';
         state.error = action.payload ? action.payload.message : action.error.message;
       })
+      .addCase(fetchTransfers.pending, (state) => {
+        state.status = 'loading';
+        state.loading = true;
+      })
+      .addCase(fetchTransfers.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.transfers = action.payload;
+        state.loading = false;
+      })
+      .addCase(fetchTransfers.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.payload ? action.payload.message : action.error.message;
+      })
       // make a deposit
       .addCase(makeDeposit.pending, (state) => {
         state.status = 'loading';
@@ -119,7 +143,7 @@ const transactionsSlice = createSlice({
       })
       .addCase(makeTransfer.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.transactions.push(action.payload);
+        state.transfers.push(action.payload);
         state.loading = false;
       })
       .addCase(makeTransfer.rejected, (state, action) => {
