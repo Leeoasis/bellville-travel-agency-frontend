@@ -29,14 +29,16 @@ const RecentTransactions = () => {
         <thead>
           <tr>
             <th className="text-left">Date</th>
+            <th className="text-left">Account</th>
             <th className="text-left">Type</th>
             <th className="text-right">Amount</th>
           </tr>
         </thead>
         <tbody>
-          {transactions.slice(0, 5).map(transaction => (
+          {transactions.slice(0, 10).map(transaction => (
             <tr key={transaction.id}>
               <td>{new Date(transaction.date).toLocaleDateString()}</td>
+              <td>{transaction.account_name}</td>
               <td>{transaction.transaction_type}</td>
               <td className="text-right">${transaction.amount}</td>
             </tr>

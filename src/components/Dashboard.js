@@ -18,10 +18,6 @@ const Dashboard = () => {
     dispatch(fetchTransactions());
   }, [dispatch]);
 
-  useEffect(() => {
-    console.log('Fetched transactions:', transactions);
-  }, [transactions]);
-
   return (
     <div className="p-6 bg-gradient-to-b from-white to-gray-100 min-h-screen">
       <h1 className="text-4xl font-bold text-center mb-8 text-gray-800">Dashboard</h1>

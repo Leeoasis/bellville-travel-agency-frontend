@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:3001/api/transactions';
+const BASE_URL = 'http://localhost:3001/api';
 
 const initialState = {
   transactions: [],
@@ -14,7 +14,7 @@ const initialState = {
 // Fetch all transactions
 export const fetchTransactions = createAsyncThunk('transactions/fetchTransactions', async (_, thunkApi) => {
   try {
-    const response = await axios.get(`${BASE_URL}`);
+    const response = await axios.get(`${BASE_URL}/transactions`);
     return response.data;
   } catch (error) {
     console.error('Error fetching transactions:', error.response);
@@ -27,7 +27,7 @@ export const makeDeposit = createAsyncThunk(
   'transaction/makeDeposit',
   async (transactionData, thunkApi) => {
     try {
-      const response = await axios.post(`${BASE_URL}/deposit`, transactionData);
+      const response = await axios.post(`${BASE_URL}/transactions/deposit`, transactionData);
       return response.data;
     } catch (error) {
       return thunkApi.rejectWithValue(error.response.data);
@@ -40,7 +40,7 @@ export const makeWithdrawal = createAsyncThunk(
   'transaction/makeWithdrawal',
   async (transactionData, thunkApi) => {
     try {
-      const response = await axios.post(`${BASE_URL}/withdraw`, transactionData);
+      const response = await axios.post(`${BASE_URL}/transactions/withdraw`, transactionData);
       return response.data;
     } catch (error) {
       return thunkApi.rejectWithValue(error.response.data);
@@ -53,7 +53,7 @@ export const makeTransfer = createAsyncThunk(
   'transaction/makeTransfer',
   async (transferData, thunkApi) => {
     try {
-      const response = await axios.post(`${BASE_URL}/transfer`, transferData);
+      const response = await axios.post(`${BASE_URL}/transfers`, transferData);
       return response.data;
     } catch (error) {
       return thunkApi.rejectWithValue(error.response.data);
