@@ -35,11 +35,11 @@ const AccountForm = ({ userId }) => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+    <div>
       <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-8">
-        <h2 className="text-2xl font-bold text-center text-gray-800">
+        {/* <h2 className="text-2xl font-bold text-center text-gray-800">
           Create New Account
-        </h2>
+        </h2> */}
         {errorMessage && (
           <p className="text-red-500 text-center mt-2">{errorMessage}</p>
         )}

@@ -26,13 +26,13 @@ const AccountSummary = () => {
   if (error) return <p>Error: {error.message}</p>;
 
   return (
-    <div className="bg-gray-100 p-4 rounded shadow">
-      <h2 className="text-xl font-bold">Accounts Overview</h2>
+    <div className="bg-white p-6 rounded-lg shadow-lg transition-transform transform hover:scale-105 duration-300">
+      <h2 className="text-2xl font-bold text-gray-800 mb-4">Accounts Overview</h2>
       <ul>
         {accounts.map((account) => (
           <li key={account.id} className="py-2 border-b border-gray-200">
-            <p className="font-medium">{account.account_name}</p>
-            <p>Balance: R{account.balance}</p>
+            <p className="font-medium text-gray-700">{account.account_name}</p>
+            <p className="text-gray-600">Balance: R{account.balance}</p>
           </li>
         ))}
       </ul>

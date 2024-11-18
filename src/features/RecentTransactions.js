@@ -24,8 +24,8 @@ const RecentTransactions = () => {
   }
 
   return (
-    <div className="bg-gray-100 p-4 rounded shadow">
-      <h2 className="text-xl font-bold">Recent Transactions and Transfers</h2>
+    <div className="bg-white p-6 rounded-lg shadow-lg transition-transform transform hover:scale-105 duration-300 mx-4 lg:mx-0">
+      <h2 className="text-2xl font-bold text-gray-800 mb-4">Recent Transactions and Transfers</h2>
       <table className="w-full mt-2">
         <thead>
           <tr>
@@ -37,19 +37,19 @@ const RecentTransactions = () => {
         </thead>
         <tbody>
           {transactions.slice(0, 10).map(transaction => (
-            <tr key={transaction.id}>
-              <td>{new Date(transaction.date).toLocaleDateString()}</td>
-              <td>{transaction.account_name}</td>
-              <td>{transaction.transaction_type}</td>
-              <td className="text-right">${transaction.amount}</td>
+            <tr key={transaction.id} className="border-b border-gray-200">
+              <td className="py-2">{new Date(transaction.date).toLocaleDateString()}</td>
+              <td className="py-2">{transaction.account_name}</td>
+              <td className="py-2">{transaction.transaction_type}</td>
+              <td className="py-2 text-right">${transaction.amount}</td>
             </tr>
           ))}
           {transfers.slice(0, 10).map(transfer => (
-            <tr key={transfer.id}>
-              <td>{new Date(transfer.date).toLocaleDateString()}</td>
-              <td>From: {transfer.from_account_name} To: {transfer.to_account_name}</td>
-              <td>Transfer</td>
-              <td className="text-right">${transfer.amount}</td>
+            <tr key={transfer.id} className="border-b border-gray-200">
+              <td className="py-2">{new Date(transfer.date).toLocaleDateString()}</td>
+              <td className="py-2">From: {transfer.from_account_name} To: {transfer.to_account_name}</td>
+              <td className="py-2">Transfer</td>
+              <td className="py-2 text-right">${transfer.amount}</td>
             </tr>
           ))}
         </tbody>

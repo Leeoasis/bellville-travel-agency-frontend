@@ -34,9 +34,11 @@ const BalanceSummary = () => {
   }, 0);
 
   return (
-    <div className="bg-gray-100 p-4 rounded shadow">
-      <h2 className="text-xl font-bold">Total Balance</h2>
-      <p className="text-2xl font-semibold">R {totalBalance.toFixed(2)}</p>
+    <div className="bg-white p-6 rounded-lg shadow-lg transition-transform transform hover:scale-105 duration-300">
+      <h2 className="text-2xl font-bold text-gray-800 mb-4">
+        <span className="mr-2">💰</span> Total Balance
+      </h2>
+      <p className="text-3xl font-semibold text-green-600">R {totalBalance.toFixed(2)}</p>
     </div>
   );
 };
