@@ -36,7 +36,7 @@ const RecentTransactions = () => {
           </tr>
         </thead>
         <tbody>
-          {transactions.slice(0, 10).map(transaction => (
+          {transactions.slice(0, 500).map(transaction => (
             <tr key={transaction.id} className="border-b border-gray-200">
               <td className="py-2">{new Date(transaction.date).toLocaleDateString()}</td>
               <td className="py-2">{transaction.account_name}</td>
