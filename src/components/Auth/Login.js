@@ -1,66 +1,53 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginUser } from '../../redux/authSlice';
 
-const Login = ({ onLogin }) => {
-  const [credentials, setCredentials] = useState({ email: '', password: '' });
-  const [errorMessage, setErrorMessage] = useState('');
-  const navigate = useNavigate(); // Initialize useNavigate
+const Login = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setCredentials((prev) => ({ ...prev, [name]: value }));
-  };
+  // Get error and loading state from Redux
+  const { error, isLoading } = useSelector((state) => state.auth); // Correct path
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    const response = await fetch('http://localhost:3001/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        user: {
-          email: credentials.email,
-          password: credentials.password,
-        },
-      }),
-    });
-
-    if (response.ok) {
-      const data = await response.json();
-      onLogin(data);
-      setErrorMessage('');
-      navigate('/home'); // Redirect to the home page
-    } else {
-      const errorData = await response.json();
-      setErrorMessage(errorData.status.message);
-    }
+    dispatch(loginUser({ email, password }))
+      .unwrap()
+      .then(() => navigate('/home'))
+      .catch(() => {}); // Error handled in Redux state
   };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-blue-500 to-purple-600">
       <div className="max-w-md mx-auto bg-white rounded-lg shadow-lg p-8">
         <h2 className="text-2xl font-bold text-center text-gray-800">Login</h2>
-        {errorMessage && <p className="text-red-500 text-center mt-2">{errorMessage}</p>}
+        {error && <p className="text-red-500 text-center mt-2">{error}</p>}
         <form onSubmit={handleSubmit} className="mt-6">
           <input
             type="email"
-            name="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             placeholder="Email"
-            onChange={handleChange}
             required
             className="border p-2 w-full my-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
           <input
             type="password"
-            name="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             placeholder="Password"
-            onChange={handleChange}
             required
             className="border p-2 w-full my-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
-          <button type="submit" className="bg-blue-500 text-white p-2 rounded-lg w-full hover:bg-blue-600 transition duration-200">
-            Login
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="bg-blue-500 text-white p-2 rounded-lg w-full hover:bg-blue-600 transition duration-200"
+          >
+            {isLoading ? 'Logging In...' : 'Login'}
           </button>
         </form>
         <p className="text-center text-gray-600 mt-4">
