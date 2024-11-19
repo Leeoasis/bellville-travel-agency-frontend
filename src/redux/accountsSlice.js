@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk, isRejectedWithValue } from '@reduxjs/too
 import axios from 'axios';
 import { makeDeposit, makeWithdrawal } from './transactionsSlice';
 
-const BASE_URL = 'http://localhost:3001/api/accounts';
+const BASE_URL = 'https://belville-travel-agency.onrender.com/api/accounts';
 
 const initialState = {
   accounts: [],
