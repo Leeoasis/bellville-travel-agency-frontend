@@ -6,7 +6,7 @@ export const loginUser = createAsyncThunk(
   'auth/loginUser',
   async (userData, { rejectWithValue, dispatch }) => {
     try {
-      const response = await axios.post('http://localhost:3001/auth/sign_in', userData);
+      const response = await axios.post('https://belville-travel-agency.onrender.com/auth/sign_in', userData);
       const { data, headers } = response;
 
       axios.defaults.headers.common['uid'] = headers['uid'];
@@ -55,7 +55,7 @@ export const signupUser = createAsyncThunk(
   'auth/signupUser',
   async (userData, { rejectWithValue, dispatch }) => {
     try {
-      const response = await axios.post('http://localhost:3001/auth', userData);
+      const response = await axios.post('https://belville-travel-agency.onrender.com/auth', userData);
       const { data, headers } = response;
 
       // Store tokens in local storage and set auth headers
