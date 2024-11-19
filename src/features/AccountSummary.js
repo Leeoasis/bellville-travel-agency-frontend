@@ -33,6 +33,12 @@ const AccountSummary = () => {
           <li key={account.id} className="py-2 border-b border-gray-200">
             <p className="font-medium text-gray-700">{account.account_name}</p>
             <p className="text-gray-600">Balance: R{account.balance}</p>
+            {account.phone_number && (
+              <p className="text-gray-600">Phone Number: {account.phone_number}</p>
+            )}
+            {account.book_number && (
+              <p className="text-gray-600">Book Number: {account.book_number}</p>
+            )}
           </li>
         ))}
       </ul>
