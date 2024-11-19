@@ -5,6 +5,8 @@ import { createAccount } from '../redux/accountsSlice';
 const AccountForm = ({ userId }) => {
   const [accountName, setAccountName] = useState('');
   const [balance, setBalance] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [bookNumber, setBookNumber] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
 
@@ -14,19 +16,21 @@ const AccountForm = ({ userId }) => {
     e.preventDefault();
 
     try {
-      // Call the createAccount thunk action
       const accountData = {
-        user_id: userId, // pass the user ID
+        user_id: userId,
         account_name: accountName,
-        balance: parseFloat(balance), // ensure balance is a number
+        balance: parseFloat(balance),
+        phone_number: phoneNumber,
+        book_number: bookNumber,
       };
 
       await dispatch(createAccount(accountData));
 
-      // Handle the response
       setSuccessMessage('Account created successfully!');
       setAccountName('');
       setBalance('');
+      setPhoneNumber('');
+      setBookNumber('');
     } catch (error) {
       setErrorMessage(
         error.response?.data?.error || 'Failed to create account. Please try again.'
@@ -35,46 +39,56 @@ const AccountForm = ({ userId }) => {
   };
 
   return (
-    <div>
-      <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-8">
-        {/* <h2 className="text-2xl font-bold text-center text-gray-800">
-          Create New Account
-        </h2> */}
-        {errorMessage && (
-          <p className="text-red-500 text-center mt-2">{errorMessage}</p>
-        )}
-        {successMessage && (
-          <p className="text-green-500 text-center mt-2">{successMessage}</p>
-        )}
-        <form onSubmit={handleSubmit} className="mt-6">
-          <input
-            type="text"
-            name="account_name"
-            placeholder="Account Name"
-            value={accountName}
-            onChange={(e) => setAccountName(e.target.value)}
-            required
-            className="border p-2 w-full my-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-          />
-          <input
-            type="number"
-            name="balance"
-            placeholder="Initial Balance"
-            value={balance}
-            onChange={(e) => setBalance(e.target.value)}
-            required
-            className="border p-2 w-full my-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-          />
-          <button
-            type="submit"
-            className="bg-blue-500 text-white p-2 rounded-lg w-full hover:bg-blue-600 transition duration-200"
-          >
-            Create Account
-          </button>
-        </form>
-      </div>
+    <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-8">
+      {errorMessage && <p className="text-red-500 text-center mt-2">{errorMessage}</p>}
+      {successMessage && <p className="text-green-500 text-center mt-2">{successMessage}</p>}
+      <form onSubmit={handleSubmit} className="mt-6">
+        <input
+          type="text"
+          name="account_name"
+          placeholder="Account Name"
+          value={accountName}
+          onChange={(e) => setAccountName(e.target.value)}
+          required
+          className="border p-2 w-full my-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+        />
+        <input
+          type="number"
+          name="balance"
+          placeholder="Initial Balance"
+          value={balance}
+          onChange={(e) => setBalance(e.target.value)}
+          required
+          className="border p-2 w-full my-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+        />
+        <input
+          type="text"
+          name="phone_number"
+          placeholder="Phone Number"
+          value={phoneNumber}
+          onChange={(e) => setPhoneNumber(e.target.value)}
+          required
+          className="border p-2 w-full my-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+        />
+        <input
+          type="text"
+          name="book_number"
+          placeholder="Book Number"
+          value={bookNumber}
+          onChange={(e) => setBookNumber(e.target.value)}
+          required
+          className="border p-2 w-full my-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+        />
+        <button
+          type="submit"
+          className="bg-blue-500 text-white p-2 rounded-lg w-full hover:bg-blue-600 transition duration-200"
+        >
+          Create Account
+        </button>
+      </form>
     </div>
   );
 };
+
 
 export default AccountForm;
