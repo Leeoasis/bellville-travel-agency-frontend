@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk, isRejectedWithValue } from '@reduxjs/too
 import axios from 'axios';
 import { makeDeposit, makeWithdrawal } from './transactionsSlice';
 
+// const BASE_URL = 'http://localhost:3001/api/accounts';
 const BASE_URL = 'https://belville-travel-agency.onrender.com/api/accounts';
 
 const initialState = {
@@ -47,6 +48,32 @@ export const createAccount = createAsyncThunk(
     }
   },
 );
+
+export const deleteAccount = createAsyncThunk(
+  'account/deleteAccount',
+  async (accountId, thunkApi) => {
+    try {
+      await axios.delete(`${BASE_URL}/${accountId}`);
+      return accountId; // Return the ID to remove it from state
+    } catch (error) {
+      return thunkApi.rejectWithValue(error.response.data);
+    }
+  },
+);
+
+export const updateAccount = createAsyncThunk(
+  'account/updateAccount',
+  async ({ id, data }, thunkApi) => {
+    try {
+      const response = await axios.put(`${BASE_URL}/${id}`, data);
+      return response.data; // Return the updated account object
+    } catch (error) {
+      return thunkApi.rejectWithValue(error.response.data);
+    }
+  }
+);
+
+
 
 const accountsSlice = createSlice({
   name: 'accounts',
@@ -111,6 +138,31 @@ const accountsSlice = createSlice({
         if (account) {
           account.balance -= action.payload.amount;
         }
+      })
+      .addCase(deleteAccount.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(deleteAccount.fulfilled, (state, action) => {
+        state.accounts = state.accounts.filter((account) => account.id !== action.payload);
+        state.loading = false;
+      })
+      .addCase(deleteAccount.rejected, (state, action) => {
+        state.error = action.error.message;
+        state.loading = false;
+      })
+      .addCase(updateAccount.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateAccount.fulfilled, (state, action) => {
+        const index = state.accounts.findIndex((account) => account.id === action.payload.id);
+        if (index !== -1) {
+          state.accounts[index] = action.payload;
+        }
+        state.loading = false;
+      })
+      .addCase(updateAccount.rejected, (state, action) => {
+        state.error = action.error.message;
+        state.loading = false;
       });
   },
 });
