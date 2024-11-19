@@ -41,7 +41,7 @@ const RecentTransactions = () => {
               <td className="py-2">{new Date(transaction.date).toLocaleDateString()}</td>
               <td className="py-2">{transaction.account_name}</td>
               <td className="py-2">{transaction.transaction_type}</td>
-              <td className="py-2 text-right">${transaction.amount}</td>
+              <td className="py-2 text-right">R{transaction.amount}</td>
             </tr>
           ))}
           {transfers.slice(0, 10).map(transfer => (
@@ -49,7 +49,7 @@ const RecentTransactions = () => {
               <td className="py-2">{new Date(transfer.date).toLocaleDateString()}</td>
               <td className="py-2">From: {transfer.from_account_name} To: {transfer.to_account_name}</td>
               <td className="py-2">Transfer</td>
-              <td className="py-2 text-right">${transfer.amount}</td>
+              <td className="py-2 text-right">R{transfer.amount}</td>
             </tr>
           ))}
         </tbody>
