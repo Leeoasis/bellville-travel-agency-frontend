@@ -7,6 +7,7 @@ const AccountForm = ({ userId }) => {
   const [balance, setBalance] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [bookNumber, setBookNumber] = useState('');
+  const [paymentType, setPaymentType] = useState('cash');
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
 
@@ -22,6 +23,7 @@ const AccountForm = ({ userId }) => {
         balance: parseFloat(balance),
         phone_number: phoneNumber,
         book_number: bookNumber,
+        payment_type: paymentType,
       };
 
       await dispatch(createAccount(accountData));
@@ -31,6 +33,7 @@ const AccountForm = ({ userId }) => {
       setBalance('');
       setPhoneNumber('');
       setBookNumber('');
+      setPaymentType('cash');
     } catch (error) {
       setErrorMessage(
         error.response?.data?.error || 'Failed to create account. Please try again.'
@@ -79,6 +82,17 @@ const AccountForm = ({ userId }) => {
           required
           className="border p-2 w-full my-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
         />
+        <div>
+          <label>Payment Type:</label>
+          <select
+            value={paymentType}
+            onChange={(e) => setPaymentType(e.target.value)}
+            className="border p-2 w-full my-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+          >
+            <option value="cash">Cash</option>
+            <option value="card">Card</option>
+          </select>
+        </div>
         <button
           type="submit"
           className="bg-blue-500 text-white p-2 rounded-lg w-full hover:bg-blue-600 transition duration-200"
@@ -89,6 +103,5 @@ const AccountForm = ({ userId }) => {
     </div>
   );
 };
-
 
 export default AccountForm;

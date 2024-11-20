@@ -30,6 +30,7 @@ const AccountSummary = () => {
       balance: account.balance,
       phone_number: account.phone_number,
       book_number: account.book_number,
+      payment_type: account.payment_type,
     });
   };
 
@@ -101,6 +102,18 @@ const AccountSummary = () => {
                   placeholder="Book Number"
                   className="border p-2 rounded"
                 />
+                <div>
+                  <label>Payment Type:</label>
+                  <select
+                    name="payment_type"
+                    value={formData.payment_type}
+                    onChange={handleFormChange}
+                    className="border p-2 rounded"
+                  >
+                    <option value="cash">Cash</option>
+                    <option value="card">Card</option>
+                  </select>
+                </div>
                 <div className="flex space-x-2">
                   <button
                     type="submit"
@@ -124,6 +137,7 @@ const AccountSummary = () => {
                   <p className="text-gray-600">Balance: R{account.balance}</p>
                   {account.phone_number && <p className="text-gray-600">Phone Number: {account.phone_number}</p>}
                   {account.book_number && <p className="text-gray-600">Book Number: {account.book_number}</p>}
+                  {account.payment_type && <p className="text-gray-600">Payment Type: {account.payment_type}</p>}
                 </div>
                 <div className="flex space-x-2">
                   <button
