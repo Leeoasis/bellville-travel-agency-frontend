@@ -18,6 +18,12 @@ const TransactionForm = () => {
     dispatch(fetchAccounts());
   }, [dispatch]);
 
+  useEffect(() => {
+    if (accounts.length > 0) {
+      setSelectedAccount(accounts[0].id);
+    }
+  }, [accounts]);
+
   if (!Array.isArray(accounts) || accounts.length === 0) {
     return <div>No accounts available for transactions.</div>;
   }
