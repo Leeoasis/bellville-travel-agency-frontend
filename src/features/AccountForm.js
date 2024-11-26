@@ -90,7 +90,7 @@ const AccountForm = ({ userId }) => {
             className="border p-2 w-full my-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
           >
             <option value="cash">Cash</option>
-            <option value="card">Card</option>
+            <option value="Shop to Shop">Shop to Shop</option>
           </select>
         </div>
         <button
