@@ -1,8 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-// const BASE_URL = 'http://localhost:3001/api';
-const BASE_URL = 'https://belville-travel-agency.onrender.com/api';
+const BASE_URL = 'http://localhost:3001/api';
+// const BASE_URL = 'https://belville-travel-agency.onrender.com/api';
 
 
 const initialState = {
@@ -63,13 +63,14 @@ export const makeWithdrawal = createAsyncThunk(
 
 // Make a transfer
 export const makeTransfer = createAsyncThunk(
-  'transaction/makeTransfer',
-  async (transferData, thunkApi) => {
+  'transactions/makeTransfer',
+  async (transferData, { rejectWithValue }) => {
     try {
       const response = await axios.post(`${BASE_URL}/transfers`, transferData);
+
       return response.data;
     } catch (error) {
-      return thunkApi.rejectWithValue(error.response.data);
+      return rejectWithValue(error.response ? error.response.data : error.message);
     }
   }
 );

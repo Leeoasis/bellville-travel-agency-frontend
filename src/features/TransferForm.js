@@ -13,24 +13,31 @@ const TransferForm = () => {
   const [errorMessage, setErrorMessage] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
 
-  // Check if accounts is an array and has elements
   if (!Array.isArray(accounts) || accounts.length === 0) {
-    return <div>No accounts available for transfer.</div>; // Handle the case when accounts is not an array or is empty
+    return <div>No accounts available for transfer.</div>;
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMessage(null);
     setSuccessMessage(null);
+
     try {
-      const transferData = { from_account_name: fromAccount, to_account_name: toAccount, amount, date };
+      const transferData = {
+        from_account_id: fromAccount, 
+        to_account_id: toAccount,
+        amount,
+        date,
+      };
+
+      // Send the transferData directly to the backend
       await dispatch(makeTransfer(transferData)).unwrap();
-      await dispatch(fetchAccounts()); // Fetch updated accounts
+      await dispatch(fetchAccounts());
       setFromAccount('');
       setToAccount('');
       setAmount(0);
       setDate(new Date().toISOString().split('T')[0]);
-      setSuccessMessage("Transfer completed successfully");
+      setSuccessMessage("Transfer completed successfully.");
     } catch (error) {
       setErrorMessage("Error processing transfer: " + error.message);
     }
@@ -49,7 +56,7 @@ const TransferForm = () => {
         >
           <option value="">Select Account</option>
           {accounts.map(account => (
-            <option key={account.id} value={account.account_name}>{account.account_name}</option>
+            <option key={account.id} value={account.id}>{account.account_name}</option>
           ))}
         </select>
       </div>
@@ -62,7 +69,7 @@ const TransferForm = () => {
         >
           <option value="">Select Account</option>
           {accounts.map(account => (
-            <option key={account.id} value={account.account_name}>{account.account_name}</option>
+            <option key={account.id} value={account.id}>{account.account_name}</option>
           ))}
         </select>
       </div>
