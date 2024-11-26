@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { makeDeposit, makeWithdrawal } from '../redux/transactionsSlice';
 import { fetchAccounts } from '../redux/accountsSlice';
@@ -9,10 +9,14 @@ const TransactionForm = () => {
   const dispatch = useDispatch();
   const [amount, setAmount] = useState(0);
   const [transactionType, setTransactionType] = useState('deposit');
-  const [selectedAccount, setSelectedAccount] = useState(accounts[0]?.account_name || '');
+  const [selectedAccount, setSelectedAccount] = useState(accounts[0]?.id || '');
   const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
   const [successMessage, setSuccessMessage] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
+
+  useEffect(() => {
+    dispatch(fetchAccounts());
+  }, [dispatch]);
 
   if (!Array.isArray(accounts) || accounts.length === 0) {
     return <div>No accounts available for transactions.</div>;
@@ -23,7 +27,7 @@ const TransactionForm = () => {
     setSuccessMessage(null);
     setErrorMessage(null);
     try {
-      const transactionData = { amount, account_name: selectedAccount, date, transaction_type: transactionType };
+      const transactionData = { amount, account_id: selectedAccount, date, transaction_type: transactionType };
       let response;
       if (transactionType === 'deposit') {
         response = await dispatch(makeDeposit(transactionData)).unwrap();
@@ -40,7 +44,7 @@ const TransactionForm = () => {
       setSuccessMessage("Transaction created successfully");
       // Clear form fields
       setAmount(0);
-      setSelectedAccount(accounts[0]?.account_name || '');
+      setSelectedAccount(accounts[0]?.id || '');
       setDate(new Date().toISOString().split('T')[0]);
     } catch (error) {
       setErrorMessage("Error processing transaction: " + error.message);
@@ -70,7 +74,7 @@ const TransactionForm = () => {
           className="border p-2 rounded"
         >
           {accounts.map((account) => (
-            <option key={account.account_name} value={account.account_name}>
+            <option key={account.id} value={account.id}>
               {account.account_name}
             </option>
           ))}

@@ -1,9 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-// const BASE_URL = 'http://localhost:3001/api';
-const BASE_URL = 'https://belville-travel-agency.onrender.com/api';
-
+const BASE_URL = 'http://localhost:3001/api';
 
 const initialState = {
   transactions: [],
@@ -67,7 +65,6 @@ export const makeTransfer = createAsyncThunk(
   async (transferData, { rejectWithValue }) => {
     try {
       const response = await axios.post(`${BASE_URL}/transfers`, transferData);
-
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response ? error.response.data : error.message);
