@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { makeTransfer } from '../redux/transactionsSlice';
 import { fetchAccounts } from '../redux/accountsSlice';
+import { fetchTransfers } from '../redux/transactionsSlice';
 
 const TransferForm = () => {
   const dispatch = useDispatch();
@@ -33,6 +34,7 @@ const TransferForm = () => {
       // Send the transferData directly to the backend
       await dispatch(makeTransfer(transferData)).unwrap();
       await dispatch(fetchAccounts());
+      await dispatch(fetchTransfers());
       setFromAccount('');
       setToAccount('');
       setAmount(0);
